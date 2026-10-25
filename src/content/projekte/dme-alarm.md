@@ -15,6 +15,11 @@ Als Hardware dient ein **ESP32-1732S019**: ein ESP32-S3 (N16R8) mit fest verbaut
 (ST7789, 170×320). Das Display zeigt in Ruhe ein grünes **BEREIT**, bei Alarm rot **ALARM**,
 dazu Zeitpunkt des letzten Alarms, WLAN-Signal und ob die Verbindung zu Home Assistant steht.
 
+<div class="photos">
+  <figure><img src="/img/dme/bereit.jpg" alt="ESP32 mit Display zeigt BEREIT vor der Melder-Ladeschale" loading="lazy" width="1084" height="1100" /><figcaption>Im Einsatz neben der Ladeschale – Ruhezustand</figcaption></figure>
+  <figure><img src="/img/dme/alarm.jpg" alt="Display zeigt ALARM auf rotem Hintergrund" loading="lazy" width="1100" height="662" /><figcaption>Beim Test auf dem Schreibtisch – Alarm ausgelöst</figcaption></figure>
+</div>
+
 ## Verdrahtung
 
 | Ladegerät (DIN-Stecker) | ESP32 |
