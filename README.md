@@ -1,6 +1,6 @@
 # mathiaskasper.de
 
-Persönliche Seite mit Projekten und Codeschnipseln. Gebaut mit [Astro](https://astro.build), ausgeliefert über Cloudflare Pages.
+Persönliche Seite mit Projekten und Codeschnipseln. Gebaut mit [Astro](https://astro.build), ausgeliefert als Cloudflare Worker (statische Assets, siehe `wrangler.jsonc`).
 
 ## Neuen Inhalt anlegen
 
