@@ -1,0 +1,39 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+import { fmtDate } from '../../lib';
+
+const snippets = (await getCollection('snippets')).sort((a, b) => +b.data.date - +a.data.date);
+const tags = [...new Set(snippets.flatMap((s) => s.data.tags))].sort();
+---
+<Base title="Snippets" description="Kurze, erprobte Codeschnipsel für Home Assistant, ESPHome, MeshCore und Linux.">
+  <div class="eyebrow">Snippets</div>
+  <h1>Codeschnipsel</h1>
+  <p class="lead">Kurz, erprobt, zum Kopieren. Meist Home Assistant, ESPHome, MeshCore und Linux-Betrieb.</p>
+
+  <div class="filters" role="group" aria-label="Nach Tag filtern">
+    <button type="button" data-f="alle" aria-pressed="true">Alle</button>
+    {tags.map((t) => <button type="button" data-f={t} aria-pressed="false">{t}</button>)}
+  </div>
+
+  <div class="list" id="snippets">
+    {snippets.map((s) => (
+      <a class="card row" href={`/snippets/${s.id}/`} data-tags={s.data.tags.join(' ')}>
+        <h3>{s.data.title}</h3>
+        <span class="lang">{s.data.lang}</span>
+        <p>{s.data.summary}</p>
+        <span class="muted" style="font-size:.85rem">{fmtDate(s.data.date)}</span>
+      </a>
+    ))}
+  </div>
+
+  <script>
+    const btns = document.querySelectorAll<HTMLButtonElement>('.filters button');
+    const rows = document.querySelectorAll<HTMLElement>('#snippets .card');
+    btns.forEach((b) => b.addEventListener('click', () => {
+      const f = b.dataset.f!;
+      btns.forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+      rows.forEach((r) => (r.hidden = f !== 'alle' && !r.dataset.tags!.split(' ').includes(f)));
+    }));
+  </script>
+</Base>

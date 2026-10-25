@@ -1,0 +1,65 @@
+---
+import '../styles/global.css';
+
+interface Props { title?: string; description?: string; }
+const { title, description = 'Mathias Kasper – MeshCore, Home Assistant, ADS-B und Codeschnipsel aus dem Saarland.' } = Astro.props;
+const fullTitle = title ? `${title} · mathiaskasper.de` : 'Mathias Kasper · Funk, Mesh & Smart Home';
+const path = Astro.url.pathname;
+const nav = [
+  { href: '/projekte/', label: 'Projekte' },
+  { href: '/snippets/', label: 'Snippets' },
+  { href: '/ueber/', label: 'Über mich' },
+];
+const isActive = (href: string) => path.startsWith(href);
+---
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="canonical" href={new URL(path, Astro.site)} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta name="theme-color" content="#0d1117" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="wrap">
+        <a class="brand" href="/">mathias<span>kasper</span>.de</a>
+        <nav class="nav" aria-label="Hauptnavigation">
+          {nav.map((n) => <a href={n.href} aria-current={isActive(n.href) ? 'page' : undefined}>{n.label}</a>)}
+          <a href="https://github.com/Saarlandpower" rel="me">GitHub</a>
+        </nav>
+      </div>
+    </header>
+    <main><div class="wrap"><slot /></div></main>
+    <footer class="site-footer">
+      <div class="wrap">
+        <span>© {new Date().getFullYear()} Mathias Kasper · Saarland</span>
+        <nav aria-label="Rechtliches">
+          <a href="/impressum/">Impressum</a>
+          <a href="/datenschutz/">Datenschutz</a>
+        </nav>
+      </div>
+    </footer>
+    <script>
+      document.querySelectorAll('.prose pre').forEach((pre) => {
+        const btn = document.createElement('button');
+        btn.className = 'copy-btn';
+        btn.type = 'button';
+        btn.textContent = 'Kopieren';
+        btn.addEventListener('click', async () => {
+          const code = pre.querySelector('code')?.innerText ?? '';
+          try { await navigator.clipboard.writeText(code); btn.textContent = 'Kopiert ✓'; }
+          catch { btn.textContent = 'Fehler'; }
+          setTimeout(() => (btn.textContent = 'Kopieren'), 1600);
+        });
+        pre.appendChild(btn);
+      });
+    </script>
+  </body>
+</html>

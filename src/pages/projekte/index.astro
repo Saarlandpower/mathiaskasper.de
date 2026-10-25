@@ -1,0 +1,39 @@
+---
+import Base from '../../layouts/Base.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
+import { getCollection } from 'astro:content';
+import { CATEGORIES, type Category } from '../../lib';
+
+const projekte = (await getCollection('projekte')).sort((a, b) => a.data.order - b.data.order);
+---
+<Base title="Projekte" description="Eigene Projekte und Mitarbeit: MeshCore, Home Assistant, ADS-B.">
+  <div class="eyebrow">Projekte</div>
+  <h1>Was ich baue</h1>
+  <p class="lead">Eigene Repos auf GitHub (Saarlandpower und SaarMesh-Bot), gepflegte Forks und Projekte, an denen ich mitarbeite.</p>
+
+  <div class="filters" role="group" aria-label="Nach Thema filtern">
+    <button type="button" data-f="alle" aria-pressed="true">Alle</button>
+    {(Object.keys(CATEGORIES) as Category[]).map((c) => (
+      <button type="button" data-f={c} aria-pressed="false">{CATEGORIES[c].label}</button>
+    ))}
+  </div>
+
+  <div class="grid" id="projekte">{projekte.map((p) => <ProjectCard p={p} />)}</div>
+
+  <script>
+    const btns = document.querySelectorAll<HTMLButtonElement>('.filters button');
+    const cards = document.querySelectorAll<HTMLElement>('#projekte .card');
+    const apply = (f: string) => {
+      btns.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.f === f)));
+      cards.forEach((c) => (c.hidden = f !== 'alle' && c.dataset.cat !== f));
+    };
+    btns.forEach((b) => b.addEventListener('click', () => {
+      apply(b.dataset.f!);
+      const u = new URL(location.href);
+      b.dataset.f === 'alle' ? u.searchParams.delete('kat') : u.searchParams.set('kat', b.dataset.f!);
+      history.replaceState(null, '', u);
+    }));
+    const k = new URLSearchParams(location.search).get('kat');
+    if (k && [...btns].some((b) => b.dataset.f === k)) apply(k);
+  </script>
+</Base>

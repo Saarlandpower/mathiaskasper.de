@@ -1,0 +1,25 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection, render } from 'astro:content';
+import { CATEGORIES, ROLE_LABEL } from '../../lib';
+
+export async function getStaticPaths() {
+  const projekte = await getCollection('projekte');
+  return projekte.map((p) => ({ params: { slug: p.id }, props: { p } }));
+}
+const { p } = Astro.props;
+const { Content } = await render(p);
+const d = p.data;
+---
+<Base title={d.title} description={d.summary}>
+  <a class="back" href="/projekte/">← Alle Projekte</a>
+  <div class="eyebrow">{CATEGORIES[d.category].label} · {ROLE_LABEL[d.role]}</div>
+  <h1>{d.title}</h1>
+  <p class="lead">{d.summary}</p>
+  <div class="links">
+    {d.live && <a class="btn primary" href={d.live}>Live ansehen ↗</a>}
+    {d.repo && <a class="btn" href={d.repo}>Code auf GitHub ↗</a>}
+    {d.tech.map((t) => <span class="tag">{t}</span>)}
+  </div>
+  <article class="prose"><Content /></article>
+</Base>

@@ -1,0 +1,54 @@
+---
+import Base from '../layouts/Base.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import { getCollection } from 'astro:content';
+import { CATEGORIES, fmtDate, type Category } from '../lib';
+
+const projekte = (await getCollection('projekte')).sort((a, b) => a.data.order - b.data.order);
+const featured = projekte.filter((p) => p.data.featured);
+const snippets = (await getCollection('snippets')).sort((a, b) => +b.data.date - +a.data.date).slice(0, 4);
+const counts = Object.fromEntries(
+  (Object.keys(CATEGORIES) as Category[]).map((c) => [c, projekte.filter((p) => p.data.category === c).length]),
+);
+---
+<Base>
+  <section class="hero">
+    <div class="eyebrow">Saarland · LoRa · Smart Home</div>
+    <h1>Funk, Mesh &amp; Home Assistant – <span>selbst gebaut</span>.</h1>
+    <p class="lead">
+      Ich bin Mathias. Ich betreibe das MeshCore-Netz SaarMesh im SaarLorLux-Raum, schreibe Integrationen für
+      Home Assistant und bastle an allem, was funkt. Hier sammle ich meine Projekte und Codeschnipsel.
+    </p>
+    <div class="actions">
+      <a class="btn primary" href="/projekte/">Projekte ansehen</a>
+      <a class="btn" href="/snippets/">Snippets</a>
+      <a class="btn" href="https://saarmesh.de">SaarMesh.de ↗</a>
+    </div>
+  </section>
+
+  <div class="section-head"><h2>Themen</h2></div>
+  <div class="cats">
+    {(Object.keys(CATEGORIES) as Category[]).map((c) => (
+      <a class={`card cat-tile ${c}`} href={`/projekte/?kat=${c}`}>
+        <h3>{CATEGORIES[c].label}</h3>
+        <p>{CATEGORIES[c].blurb}</p>
+        <span class="count">{counts[c]} {counts[c] === 1 ? 'Projekt' : 'Projekte'}</span>
+      </a>
+    ))}
+  </div>
+
+  <div class="section-head"><h2>Ausgewählte Projekte</h2><a href="/projekte/">Alle →</a></div>
+  <div class="grid">{featured.map((p) => <ProjectCard p={p} />)}</div>
+
+  <div class="section-head"><h2>Neueste Snippets</h2><a href="/snippets/">Alle →</a></div>
+  <div class="list">
+    {snippets.map((s) => (
+      <a class="card row" href={`/snippets/${s.id}/`}>
+        <h3>{s.data.title}</h3>
+        <span class="lang">{s.data.lang}</span>
+        <p>{s.data.summary}</p>
+        <span class="muted" style="font-size:.85rem">{fmtDate(s.data.date)}</span>
+      </a>
+    ))}
+  </div>
+</Base>

@@ -1,0 +1,14 @@
+---
+import { CATEGORIES, ROLE_LABEL } from '../lib';
+const { p } = Astro.props;
+const d = p.data;
+---
+<a class="card" href={`/projekte/${p.id}/`} data-cat={d.category}>
+  <h3>{d.title}</h3>
+  <p>{d.summary}</p>
+  <div class="meta">
+    <span class={`tag cat-${d.category}`}>{CATEGORIES[d.category].label}</span>
+    {d.role !== 'eigenes' && <span class="tag role">{ROLE_LABEL[d.role]}</span>}
+    {d.tech.slice(0, 2).map((t: string) => <span class="tag">{t}</span>)}
+  </div>
+</a>
