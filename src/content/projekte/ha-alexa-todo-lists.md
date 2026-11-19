@@ -5,7 +5,7 @@ category: homeassistant
 repo: https://github.com/Saarlandpower/ha-alexa-todo-lists
 tech: [Python, HACS]
 role: fork
-order: 13
+order: 14
 ---
 
 Das Original wurde im August 2026 archiviert, weil die Funktion in die Core-Integration *Alexa Devices*

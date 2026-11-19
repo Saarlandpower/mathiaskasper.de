@@ -15,8 +15,12 @@ Sie zeigt, was im Mesh tatsächlich passiert – rohe Pakete, Pfade, Signalwerte
 ## Funktionen
 
 - Chat mit Zustellbestätigung, @Erwähnungen und Benachrichtigungen pro Chat
+- **Übersetzung** eingehender und eigener Nachrichten – lokal im Browser, ohne API-Schlüssel
+- **Room-Server**: Anmeldung direkt im Chat, automatische Wiederanmeldung, verpasste Beiträge werden nachgeholt
+- **Reichweite** gesendeter Nachrichten laut CoreScope: wie oft gehört und über wie viele Hops
 - Live-Traffic: jedes empfangene Paket mit Route, Hops und SNR
 - Karte mit allen Knoten und Nachbar-Linien nach Signalqualität
+- Kontakte sortierbar nach zuletzt gehört, Name, Typ, Pfad, SNR oder Entfernung
 - Repeater-Verwaltung mit Terminal, Telemetrie mit Verlauf, Trace-Route
 - Öffentliche Kanäle, die die App selbst im Funkverkehr entdeckt
 - Als App installierbar, startet dann auch offline
